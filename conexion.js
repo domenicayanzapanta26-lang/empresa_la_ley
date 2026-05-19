@@ -1,22 +1,17 @@
 const mysql = require("mysql2");
 
-const conexion = mysql.createConnection({
-
-    host: "localhost",
-    user: "root",
-    password: "123456",
-    database: "inventario_tecnologico"
-
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: 20800,
+  ssl: { rejectUnauthorized: false }
 });
 
-conexion.connect(err => {
-
-    if(err){
-        console.log(err);
-    }else{
-        console.log("MySQL conectado");
-    }
-
+db.connect((err) => {
+  if (err) console.log("ERROR DB:", err);
+  else console.log("Conectado a Aiven");
 });
 
-module.exports = conexion;
+module.exports = db;
