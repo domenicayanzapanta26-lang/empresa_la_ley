@@ -1,0 +1,233 @@
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventario Tecnológico</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+
+<div id="loginScreen">
+
+  <div class="container">
+
+    <h1>📦 Inventario Tecnológico</h1>
+    <h2 id="title">Iniciar Sesión</h2>
+
+    <input type="text" id="username" placeholder="Usuario">
+    <input type="password" id="password" placeholder="Contraseña">
+
+    <button id="actionBtn">Entrar</button>
+
+    <div class="toggle" id="toggleText">
+                 Regístrate
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= APP ================= -->
+
+<div id="appScreen">
+
+  <!-- ===== MENU ===== -->
+
+  <aside class="sidebar">
+
+    <h2>📦 Sistema</h2>
+
+    <ul>
+
+      <li onclick="mostrarSeccion('inventario')">
+        📋 Inventario
+      </li>
+
+      <li onclick="mostrarSeccion('movimientos')">
+        🔄 Movimientos
+      </li>
+
+      <li onclick="mostrarSeccion('reportes')">
+        📊 Reportes
+      </li>
+
+      <li onclick="cerrarSesion()">
+        🚪 Cerrar sesión
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <!-- ===== CONTENIDO ===== -->
+
+  <main class="contenido">
+
+    <!-- ================= INVENTARIO ================= -->
+
+    <section id="inventario" class="seccion activa">
+
+      <h1>📋 Inventario de Productos</h1>
+
+      <form id="formProducto">
+
+        <div class="grid">
+
+          <input type="text" id="categoria" placeholder="Categoría" required>
+
+          <input type="text" id="nombre" placeholder="Nombre del producto" required>
+
+          <input type="text" id="codigo" placeholder="Código" required>
+
+          <input type="text" id="marca" placeholder="Marca">
+
+          <input type="text" id="proveedor" placeholder="Proveedor">
+
+          <input type="text" id="ubicacion" placeholder="Ubicación">
+
+          <input type="date" id="fecha">
+
+          <input type="number" id="precio" placeholder="Precio">
+
+          <input type="number" id="stock" placeholder="Stock">
+
+        </div>
+
+        <textarea id="descripcion" placeholder="Descripción"></textarea>
+
+        <div class="botones">
+
+          <button type="submit" class="btn agregar">
+            ➕ Agregar
+          </button>
+
+          <button type="reset" class="btn eliminar">
+            🗑 Limpiar
+          </button>
+
+        </div>
+
+      </form>
+
+      <input type="text" id="buscar" placeholder="🔍 Buscar producto...">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Categoría</th>
+            <th>Nombre</th>
+            <th>Código</th>
+            <th>Marca</th>
+            <th>Proveedor</th>
+            <th>Ubicación</th>
+            <th>Fecha</th>
+            <th>Precio</th>
+            <th>Stock</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="tablaProductos"></tbody>
+
+      </table>
+
+    </section>
+
+    <!-- ================= MOVIMIENTOS ================= -->
+
+    <section id="movimientos" class="seccion">
+
+      <h1>🔄 Movimientos</h1>
+
+      <form id="formMovimiento">
+
+        <div class="grid">
+
+          <input type="text" id="movProducto" placeholder="Producto">
+
+          <select id="tipoMovimiento">
+
+            <option>Entrada</option>
+            <option>Salida</option>
+
+          </select>
+
+          <input type="number" id="cantidadMovimiento" placeholder="Cantidad">
+
+          <input type="date" id="fechaMovimiento">
+
+        </div>
+
+        <textarea id="observacion" placeholder="Observación"></textarea>
+
+        <div class="botones">
+
+          <button type="submit" class="btn agregar">
+            Registrar Movimiento
+          </button>
+
+        </div>
+
+      </form>
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Producto</th>
+            <th>Movimiento</th>
+            <th>Cantidad</th>
+            <th>Fecha</th>
+            <th>Observación</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="tablaMovimientos"></tbody>
+
+      </table>
+
+    </section>
+
+    <!-- ================= REPORTES ================= -->
+
+    <section id="reportes" class="seccion">
+
+      <h1>📊 Reportes</h1>
+
+      <div class="cards">
+
+        <div class="card">
+          <h3>Total Productos</h3>
+          <p id="totalProductos">0</p>
+        </div>
+
+        <div class="card">
+          <h3>Stock Bajo</h3>
+          <p id="stockBajo">0</p>
+        </div>
+
+        <div class="card">
+          <h3>Movimientos</h3>
+          <p id="totalMovimientos">0</p>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
