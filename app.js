@@ -1,7 +1,4 @@
-require("dotenv").config();
-
 const express = require("express");
-const conexion = require("./conexion");
 const path = require("path");
 
 const app = express();
@@ -11,132 +8,55 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// ================= LOGIN =================
+// ================= LOGIN (SIN BASE DE DATOS) =================
 app.post("/login", (req, res) => {
+  const { usuario, contraseña } = req.body;
 
-  const usuario = req.body.usuario?.trim();
-  const password = req.body.contraseña?.trim(); // viene del frontend
-
-  const sql = "SELECT * FROM usuarios WHERE usuario = ? AND password = ?";
-
-  conexion.query(sql, [usuario, password], (err, result) => {
-
-    if (err) {
-      console.log(err);
-      return res.send("FAIL");
-    }
-
-    if (result.length > 0) {
-      res.send("OK");
-    } else {
-      res.send("FAIL");
-    }
-
-  });
-
-});
-
-// ================= REGISTER =================
-app.post("/register", (req, res) => {
-
-  const usuario = req.body.usuario?.trim();
-  const password = req.body.contraseña?.trim(); // viene del frontend
-
-  if (!usuario || !password) {
-    return res.send("FAIL");
+  if (usuario && contraseña) {
+    return res.send("OK");
   }
 
-  const sql = "INSERT INTO usuarios (usuario, password) VALUES (?, ?)";
-
-  conexion.query(sql, [usuario, password], (err) => {
-
-    if (err) {
-      console.log(err);
-      return res.send("FAIL");
-    }
-
-    res.send("OK");
-
-  });
-
+  res.send("FAIL");
 });
 
-// ================= PRODUCTOS =================
+// ================= REGISTER (SIN BASE DE DATOS) =================
+app.post("/register", (req, res) => {
+  const { usuario, contraseña } = req.body;
+
+  if (usuario && contraseña) {
+    return res.send("OK");
+  }
+
+  res.send("FAIL");
+});
+
+// ================= PRODUCTOS (MEMORIA LOCAL) =================
+let productos = [];
+
 app.get("/productos", (req, res) => {
-
-  conexion.query("SELECT * FROM productos", (err, result) => {
-    if (err) return res.status(500).send("ERROR");
-    res.json(result);
-  });
-
+  res.json(productos);
 });
 
 app.post("/productos", (req, res) => {
-
-  const p = req.body;
-
-  const sql = `
-    INSERT INTO productos
-    (categoria, nombre, codigo, marca, proveedor, ubicacion, fecha, descripcion, precio, stock)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
-
-  conexion.query(sql, [
-    p.categoria,
-    p.nombre,
-    p.codigo,
-    p.marca,
-    p.proveedor,
-    p.ubicacion,
-    p.fecha,
-    p.descripcion,
-    p.precio,
-    p.stock
-  ], (err) => {
-
-    if (err) return res.send("ERROR");
-    res.send("OK");
-
-  });
-
+  productos.push(req.body);
+  res.send("OK");
 });
 
-// ================= MOVIMIENTOS =================
+// ================= MOVIMIENTOS (MEMORIA LOCAL) =================
+let movimientos = [];
+
 app.get("/movimientos", (req, res) => {
-
-  conexion.query("SELECT * FROM movimientos", (err, result) => {
-    if (err) return res.status(500).send("ERROR");
-    res.json(result);
-  });
-
+  res.json(movimientos);
 });
 
 app.post("/movimientos", (req, res) => {
-
-  const m = req.body;
-
-  const sql = `
-    INSERT INTO movimientos
-    (producto, tipo, cantidad, fecha, observacion)
-    VALUES (?, ?, ?, ?, ?)
-  `;
-
-  conexion.query(sql, [
-    m.producto,
-    m.tipo,
-    m.cantidad,
-    m.fecha,
-    m.observacion
-  ], (err) => {
-
-    if (err) return res.send("ERROR");
-    res.send("OK");
-
-  });
-
+  movimientos.push(req.body);
+  res.send("OK");
 });
 
 // ================= SERVIDOR =================
-app.listen(process.env.PORT || 3000, () => {
-  console.log("🚀 Servidor corriendo");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("🚀 Servidor funcionando en puerto", PORT);
 });
